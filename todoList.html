@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>todo list |Sanaz baqeri</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #c6a0fc;
+      }
+      .todo {
+        width: 50vw;
+        margin: 50px auto;
+        background-color: white;
+        font-family: sans-serif;
+        padding: 15px;
+        color: #333;
+        border-radius: 7px;
+      }
+      .todo h1 {
+        margin-bottom: 1rem;
+        text-align: center;
+        color: rgb(126, 125, 125);
+      }
+      .todo form {
+        width: 100%;
+      }
+      .todo form input,
+      .todos-wrapper input {
+        width: 80%;
+        border-radius: 5px;
+        height: 40px;
+        border: none;
+        margin-bottom: 0.8rem;
+        background-color: #fafafa;
+        padding: 10px;
+        outline: 0;
+        transition: 0.3s;
+      }
+      .todo form input:focus,
+      .todos-wrapper input:focus {
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.089);
+      }
+      .todo form button,
+      .todos-wrapper button {
+        padding: 0.7rem 0.7rem;
+        border-radius: 5px;
+        display: inline-flex;
+        background-color: #a86efa;
+        border: none;
+        cursor: pointer;
+        color: white;
+        margin: 0.5rem 0;
+      }
+      .todos-wrapper {
+        width: 100%;
+        padding: 0.2rem 0px;
+      }
+      .todos-wrapper input,
+      .todos-wrapper ul {
+        width: 80%;
+      }
+
+      .todos-wrapper ul li {
+        padding: 10px;
+        background-color: #814acf;
+        color: white;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 5px;
+        transition: 0.2s;
+      }
+      .todos-wrapper ul li span {
+        display: inline-flex;
+        width: 95%;
+        transition: 0.2s;
+      }
+      .todos-wrapper ul li i {
+        font-style: normal;
+        cursor: pointer;
+      }
+      .todos-wrapper ul li i:hover {
+        color: red;
+      }
+      .line-through {
+        text-decoration: line-through;
+      }
+      .li-toggle {
+        background-color: #b6b0c0 !important;
+        color: black !important;
+      }
+      @media (max-width: 800px) {
+        .todo form button,
+        .todos-wrapper button {
+          padding: 0.7rem 0.4rem;
+        }
+      }
+      @media (max-width: 700px) {
+        .todo form input,
+        .todos-wrapper input,
+        .todos-wrapper ul {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todo">
+      <h1>My To Do List</h1>
+      <form>
+        <input type="text" placeholder="write to do" />
+        <button>add todo</button>
+      </form>
+      <div class="todos-wrapper">
+        <input type="text" placeholder="search..." />
+        <ul></ul>
+        <button>Clear all</button>
+      </div>
+    </div>
+
+    <script>
+      // select domelements
+      const todo = document.querySelector(".todo");
+      const todoForm = document.querySelector(".todo form");
+      const addTodoInput = document.querySelector(".todo form input");
+      const todoList = document.querySelector(".todos-wrapper ul");
+      const lis = document.querySelector(".todos-wrapper ul li");
+      const clearAllBtn = document.querySelector(".todos-wrapper button");
+      const filterInput = document.querySelector(".todos-wrapper input");
+      //   add todo items in li
+      todoForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (addTodoInput.value.trim() !== "") {
+          const li = document.createElement("li");
+          li.innerHTML = `<span>${addTodoInput.value.trim()}</span><i>X</i>`;
+          todoList.appendChild(li);
+          addTodoInput.value = "";
+        }
+      });
+      //   remove any items
+      todoList.addEventListener("click", function (event) {
+        if (event.target.nodeName === "I") {
+          event.target.parentElement.remove();
+        }
+        if (event.target.nodeName === "SPAN") {
+          event.target.classList.toggle("line-through");
+          event.target.parentElement.classList.toggle("li-toggle");
+          console.log(event.target.parentElement);
+        }
+      });
+      //   clear all
+      clearAllBtn.addEventListener("click", function () {
+        while (todoList.firstElementChild) {
+          todoList.firstElementChild.remove();
+        }
+      });
+      //   search
+      filterInput.addEventListener("keyup", function () {
+        for (let i = 0; i < todoList.children.length; i++) {
+          if (
+            todoList.children[i].firstElementChild.innerHTML
+              .trim()
+              .startsWith(filterInput.value.trim())
+          ) {
+            todoList.children[i].style.display = "flex";
+          } else {
+            todoList.children[i].style.display = "none";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
